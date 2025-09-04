@@ -1,0 +1,44 @@
+name: Build Cordova Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Cordova
+        run: npm install -g cordova
+
+      - name: Install project dependencies
+        run: |
+          cd Appright
+          npm install
+
+      - name: Add Android platform
+        run: |
+          cd Appright
+          cordova platform add android
+
+      - name: Build release APK
+        run: |
+          cd Appright
+          cordova build android --release
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release-unsigned
+          path: Appright/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
