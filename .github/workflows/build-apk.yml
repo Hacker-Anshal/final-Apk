@@ -1,10 +1,9 @@
-name: Build Cordova Android APK
+name: Build Android APK
 
 on:
   push:
     branches:
       - main
-  pull_request:
 
 jobs:
   build:
@@ -23,28 +22,33 @@ jobs:
         run: npm install -g cordova
 
       - name: Install dependencies
-        working-directory: Appright/cordovaApp
         run: npm install
+        working-directory: Appright/cordovaApp
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
       - name: Add Android platform
-        working-directory: Appright/cordovaApp
         run: npx cordova platform add android
-
-      - name: Build Android APK
         working-directory: Appright/cordovaApp
+
+      - name: Build Android Release APK
         run: npx cordova build android --release
+        working-directory: Appright/cordovaApp
+
+      - name: Copy APK outside
+        run: |
+          mkdir -p output-apk
+          cp Appright/cordovaApp/platforms/android/app/build/outputs/apk/release/*.apk output-apk/ || true
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: Appright/cordovaApp/platforms/android/app/build/outputs/apk/**/*.apk
+          path: output-apk/*.apk
