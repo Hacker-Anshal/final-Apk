@@ -42,7 +42,7 @@ jobs:
           npx cordova build android
 
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: RewardCoin-APK
           path: cordovaApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
