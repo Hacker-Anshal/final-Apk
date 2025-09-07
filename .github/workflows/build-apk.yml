@@ -42,10 +42,17 @@ jobs:
         run: npx cordova build android --release
         working-directory: Appright/cordovaApp
 
+      - name: Debug APK path
+        run: |
+          echo "=== Checking APK output folders ==="
+          ls -R Appright/cordovaApp/platforms/android/app/build/outputs || true
+
       - name: Copy APK outside
         run: |
           mkdir -p output-apk
           cp Appright/cordovaApp/platforms/android/app/build/outputs/apk/release/*.apk output-apk/ || true
+          cp Appright/cordovaApp/platforms/android/app/build/outputs/apk/debug/*.apk output-apk/ || true
+          cp Appright/cordovaApp/platforms/android/app/build/outputs/apk/*.apk output-apk/ || true
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
