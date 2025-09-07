@@ -10,8 +10,6 @@ import { Layout } from "@/components/Layout";
 import { AppProvider, useApp } from "@/contexts/AppContext";
 import Home from "./pages/Home";
 import Redeem from "./pages/Redeem";
-import History from "./pages/History";
-import SpinWin from "./pages/SpinWin";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
@@ -29,8 +27,6 @@ const AuthenticatedApp = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/redeem" element={<Redeem />} />
-        <Route path="/history" element={<History />} />
-        <Route path="/spin-win" element={<SpinWin />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
