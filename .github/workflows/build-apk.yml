@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: cordovaApp
+        working-directory: Appright/cordovaApp   # 👈 path fix
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -37,10 +37,10 @@ jobs:
 
       - name: Build Android APK
         run: npx cordova build android
-        working-directory: cordovaApp
+        working-directory: Appright/cordovaApp   # 👈 path fix
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: cordovaApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+          path: Appright/cordovaApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
