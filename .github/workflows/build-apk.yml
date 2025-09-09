@@ -38,24 +38,27 @@ jobs:
         run: npx cordova platform add android
         working-directory: Appright/cordovaApp
 
-      - name: Build Android Release APK
-        run: npx cordova build android --release
+      - name: Build Android Release APK + AAB
+        run: |
+          npx cordova build android --release
+          cd platforms/android
+          ./gradlew assembleRelease
+          ./gradlew bundleRelease
         working-directory: Appright/cordovaApp
 
       - name: Debug APK path
         run: |
-          echo "=== Checking APK output folders ==="
+          echo "=== Checking APK + AAB output folders ==="
           ls -R Appright/cordovaApp/platforms/android/app/build/outputs || true
 
-      - name: Copy APK outside
+      - name: Copy APK & AAB outside
         run: |
           mkdir -p output-apk
           cp Appright/cordovaApp/platforms/android/app/build/outputs/apk/release/*.apk output-apk/ || true
-          cp Appright/cordovaApp/platforms/android/app/build/outputs/apk/debug/*.apk output-apk/ || true
-          cp Appright/cordovaApp/platforms/android/app/build/outputs/apk/*.apk output-apk/ || true
+          cp Appright/cordovaApp/platforms/android/app/build/outputs/bundle/release/*.aab output-apk/ || true
 
-      - name: Upload APK
+      - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
-          path: output-apk/*.apk
+          name: android-builds
+          path: output-apk/*
